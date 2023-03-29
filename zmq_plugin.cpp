@@ -104,9 +104,9 @@ namespace eosio {
         fc::bloom_filter *whitelist_accounts_bf = NULL;
         flat_set<account_name> whitelisted_accounts;
 
-        fc::optional<scoped_connection> applied_transaction_connection;
-        fc::optional<scoped_connection> accepted_block_connection;
-        fc::optional<scoped_connection> irreversible_block_connection;
+        std::optional<scoped_connection> applied_transaction_connection;
+        std::optional<scoped_connection> accepted_block_connection;
+        std::optional<scoped_connection> irreversible_block_connection;
 
         zmq_plugin_impl():
             context(1),
@@ -116,7 +116,7 @@ namespace eosio {
             blacklist_actions.emplace(
                 std::make_pair(
                     chain::config::system_account_name,
-                    std::set<name> {N(onblock)}
+                    std::set<name> {"onblock"_n}
                 )
             );
         }
@@ -387,7 +387,7 @@ namespace eosio {
                 EOS_ASSERT( pos != string::npos, plugin_config_exception, "Invalid entry in zmq-action-blacklist: '${a}'", ("a", a));
                 account_name code( a.substr( 0, pos ));
                 account_name act( a.substr( pos + 2 ));
-                list.emplace(make_pair( N(code.value), std::set<account_name> { act } ));
+                list.emplace(make_pair( "code.value"_n, std::set<account_name> { act } ));
             }
         }
 

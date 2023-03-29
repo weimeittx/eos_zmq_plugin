@@ -183,12 +183,18 @@ namespace eosio {
             if( send_trx || send_actions ) {
 
                 for (auto &r : block_state->block->transactions) {
+                    // transaction_id_type id;
+                    // if (r.trx.contains<transaction_id_type>()) {
+                    //     id = r.trx.get<transaction_id_type>();
+                    // } else {
+                    //     id = r.trx.get<packed_transaction>().id();
+                    // }
+
                     transaction_id_type id;
-                    if (r.trx.contains<transaction_id_type>()) {
-                        id = r.trx.get<transaction_id_type>();
-                    } else {
-                        id = r.trx.get<packed_transaction>().id();
-                    }
+                    if (std::holds_alternative<transaction_id_type>(r.trx))
+                        id = std::get<transaction_id_type>(r.trx);
+                    else
+                        id = std::get<chain::packed_transaction>(r.trx).id();
 
                     if( r.status == transaction_receipt_header::executed ) {
 

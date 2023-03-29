@@ -94,3 +94,11 @@ node reader.js
 * cc32d9 <cc32d9@gmail.com>
 * https://github.com/cc32d9
 * https://medium.com/@cc32d9
+
+
+==================================================================
+(1)edit /usr/local/eos/plugins/CMakeLists.txt:
+add_subdirectory(eos_zmq_plugin)
+
+(2)edit /usr/local/eos/programs/nodeos/CMakeLists.txt:
+target_link_libraries( nodeos PRIVATE -Wl,${whole_archive_flag} zmq_plugin -Wl,${no_whole_archive_flag} )
